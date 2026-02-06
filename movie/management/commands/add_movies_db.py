@@ -4,9 +4,15 @@ import os
 import json
 
 class Command(BaseCommand):
-    help = 'Load movies from movie_descriptions.json into the Movie model'
+    """Django management command to load movies from JSON file into database.
+    
+    Usage:
+        python manage.py add_movies_db
+    """
+    help = 'Load movies from movies.json into the Movie model'
 
     def handle(self, *args, **kwargs):
+        """Load first 100 movies from JSON file and create Movie objects."""
         json_file_path = 'movie/management/commands/movies.json'
 
         with open(json_file_path, 'r') as file:

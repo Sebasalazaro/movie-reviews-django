@@ -9,6 +9,14 @@ import io
 import urllib, base64
 
 def home(request):
+    """Display all movies with optional search functionality.
+    
+    Args:
+        request: HTTP request object containing optional 'searchMovie' parameter
+        
+    Returns:
+        Rendered home.html template with movies list and search term
+    """
     searchTerm = request.GET.get('searchMovie')
     if searchTerm:
         movies = Movie.objects.filter(title__icontains = searchTerm)
@@ -16,15 +24,33 @@ def home(request):
         movies = Movie.objects.all()
     return render(request, 'home.html', {'searchTerm':searchTerm , 'movies':movies}, )
     
-def about(request):    
+def about(request):
+    """Display the about page."""
     return render(request, 'about.html')
 
 def signup(request):
+    """Display signup page with optional email parameter.
+    
+    Args:
+        request: HTTP request object containing optional 'email' parameter
+        
+    Returns:
+        Rendered signup.html template with email if provided
+    """
     email = request.GET.get('email')
     return render(request, 'signup.html', {'email':email})
 
 def statistics_view(request):
-    #Tabla Número de películas x Año
+    """Generate and display movie statistics charts.
+    
+    Creates two bar charts:
+    - Number of movies per year
+    - Number of movies per genre
+    
+    Returns:
+        Rendered statistics.html template with base64-encoded chart images
+    """
+    # Chart: Number of movies by year
     matplotlib.use('Agg')
     all_movies = Movie.objects.all()
     movie_counts_by_year = {}
@@ -57,10 +83,8 @@ def statistics_view(request):
     buffer.close()
     graphic = base64.b64encode(image_png)
     graphic = graphic.decode('utf-8')
-    
 
-    # Tabla Cantida de películas x género
-
+    # Chart: Number of movies by genre
     movie_counts_by_genre = {}
 
     for movie in all_movies:
