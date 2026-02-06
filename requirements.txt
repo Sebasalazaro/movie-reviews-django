@@ -1,4 +1,4 @@
-django
-Pillow
-pandas
-matplotlib
+Django>=5.0,<5.1
+Pillow>=10.0.0
+pandas>=2.0.0
+matplotlib>=3.7.0
